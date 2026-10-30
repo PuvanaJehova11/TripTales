@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TripTales - a simple smart travel planner">
+  <title>TripTales | Smart Travel Planner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#"><span class="brand-icon">✈</span> TripTales</a>
+    <nav><a href="#planner">Planner</a><a href="#tips">Travel tips</a></nav>
+    <button class="button button-outline" id="clearAllBtn" type="button">Clear trip</button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">YOUR NEXT ADVENTURE STARTS HERE</span>
+        <h1>Make memories.<br><em>Not messy plans.</em></h1>
+        <p>Plan your destinations, organise your day and keep your travel budget in one happy place.</p>
+        <a class="button button-light" href="#planner">Start planning <span>→</span></a>
+      </div>
+      <div class="hero-art" aria-label="Illustration of a travel destination">
+        <div class="sun"></div><div class="mountain mountain-back"></div>
+        <div class="mountain mountain-front"></div><div class="lake"></div>
+        <div class="plane">✈</div><div class="postcard">LET'S<br>GO!</div>
+      </div>
+      <div class="hero-stats"><div><strong>01</strong><span>Plan your trip</span></div><div><strong>02</strong><span>Add your stops</span></div><div><strong>03</strong><span>Enjoy the journey</span></div></div>
+    </section>
+
+    <section class="section intro" id="planner">
+      <div><span class="eyebrow">THE TRIP BUILDER</span><h2>Your journey, your way.</h2></div>
+      <p class="muted">Add a trip and build a simple itinerary. Your plans are saved in this browser automatically.</p>
+    </section>
+
+    <section class="planner-grid">
+      <article class="panel trip-panel">
+        <div class="panel-heading"><div><span class="step">01 / TRIP DETAILS</span><h3>Create your trip</h3></div><span class="round-icon">⌖</span></div>
+        <form id="tripForm">
+          <label for="tripName">Trip name</label>
+          <input id="tripName" type="text" placeholder="e.g. Weekend in Ooty" maxlength="50" required>
+          <div class="form-row">
+            <div><label for="destination">Main destination</label><input id="destination" type="text" placeholder="e.g. Ooty" required></div>
+            <div><label for="travelDate">Start date</label><input id="travelDate" type="date" required></div>
+          </div>
+          <div class="form-row">
+            <div><label for="days">Number of days</label><input id="days" type="number" min="1" max="30" value="2" required></div>
+            <div><label for="budget">Total budget (₹)</label><input id="budget" type="number" min="0" placeholder="e.g. 8000" required></div>
+          </div>
+          <button class="button button-primary full" type="submit">Save trip details <span>→</span></button>
+        </form>
+        <p class="form-note" id="tripMessage" aria-live="polite">Your trip details will appear in the overview.</p>
+      </article>
+
+      <article class="panel overview-panel">
+        <div class="panel-heading"><div><span class="step">YOUR SNAPSHOT</span><h3>Trip overview</h3></div><span class="round-icon">✦</span></div>
+        <div class="overview-destination" id="overviewDestination"><span class="pin">⌖</span><div><strong>No trip added yet</strong><small>Create your trip to see its details here.</small></div></div>
+        <div class="overview-metrics">
+          <div><span>TRAVEL DAYS</span><strong id="overviewDays">—</strong></div>
+          <div><span>YOUR BUDGET</span><strong id="overviewBudget">₹0</strong></div>
+          <div><span>PLANNED STOPS</span><strong id="overviewStops">0</strong></div>
+        </div>
+        <div class="budget-area"><div class="budget-label"><span>Budget used</span><strong id="budgetPercent">0%</strong></div><div class="progress"><span id="budgetBar"></span></div><small id="budgetHint">Add expenses to track your budget.</small></div>
+      </article>
+    </section>
+
+    <section class="section itinerary-heading">
+      <div><span class="eyebrow">02 / YOUR ADVENTURE</span><h2>Build your itinerary.</h2></div>
+      <span class="count-pill" id="stopCount">0 stops planned</span>
+    </section>
+
+    <section class="itinerary-grid">
+      <article class="panel add-stop-panel">
+        <div class="panel-heading"><div><span class="step">ADD A PLACE</span><h3>What's on your list?</h3></div><span class="round-icon">＋</span></div>
+        <form id="stopForm">
+          <label for="placeName">Place or activity</label>
+          <input id="placeName" type="text" placeholder="e.g. Botanical Garden" required maxlength="70">
+          <div class="form-row">
+            <div><label for="stopDay">Day</label><select id="stopDay"><option value="1">Day 1</option><option value="2">Day 2</option></select></div>
+            <div><label for="stopTime">Time</label><input id="stopTime" type="time" value="10:00"></div>
+          </div>
+          <label for="stopCategory">Category</label>
+          <select id="stopCategory"><option>Sightseeing</option><option>Food</option><option>Adventure</option><option>Shopping</option><option>Stay</option><option>Other</option></select>
+          <label for="stopCost">Estimated cost (₹)</label>
+          <input id="stopCost" type="number" min="0" value="0">
+          <label for="stopNotes">Notes (optional)</label>
+          <textarea id="stopNotes" rows="3" placeholder="Anything to remember?"></textarea>
+          <button class="button button-primary full" type="submit">Add to itinerary <span>＋</span></button>
+          <p class="form-note" id="stopMessage" aria-live="polite"></p>
+        </form>
+      </article>
+
+      <article class="panel itinerary-panel">
+        <div class="itinerary-top"><div><span class="step">YOUR DAY-BY-DAY PLAN</span><h3>Travel timeline</h3></div><select id="dayFilter" aria-label="Filter itinerary by day"><option value="all">All days</option><option value="1">Day 1</option><option value="2">Day 2</option></select></div>
+        <div id="itineraryList" class="itinerary-list">
+          <div class="empty-state"><span>🧭</span><strong>Your adventure is waiting.</strong><p>Add your first place using the form.</p></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section tips-section" id="tips">
+      <div><span class="eyebrow">A LITTLE TRAVEL WISDOM</span><h2>Pack smart. Travel happy.</h2></div>
+      <div class="tips-grid">
+        <div class="tip-card"><span>🎒</span><h3>Pack light</h3><p>Carry only what you need and keep essentials easy to reach.</p></div>
+        <div class="tip-card"><span>💧</span><h3>Stay hydrated</h3><p>Keep a reusable water bottle with you during the trip.</p></div>
+        <div class="tip-card"><span>📍</span><h3>Save important places</h3><p>Keep hotel details, tickets and emergency contacts handy.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer><a class="brand" href="#"><span class="brand-icon">✈</span> TripTales</a><p>Plan a little. Explore a lot. <span>© 2026 TripTales</span></p></footer>
+  <script src="script.js"></script>
+</body>
+</html>
